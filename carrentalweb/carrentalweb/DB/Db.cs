@@ -68,45 +68,38 @@ namespace carrentalweb
 
 
 
-
-
         //GetUsuarios está mal (copia de GetCoches)
         //SELECT idUsuario, nif, nombre, apellidos, email, fechanacimiento FROM Usuario
-        public static List<Usuario> GetUsuarios()
-        {
-            List<Coche> resultado = new List<Coche>();
+        //public static List<Usuario> GetUsuarios()
+        //{
+        //List<Coche> resultado = new List<Coche>();
 
-            // PREPARO EL PROCEDIMIENTO A EJECUTAR
-            string procedimiento = "dbo.GetUsuarios";
-            // PREPARO EL COMANDO PARA LA BD
-            SqlCommand comando = new SqlCommand(procedimiento, conexion);
-            // INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
-            comando.CommandType = CommandType.StoredProcedure;
-            // EJECUTO EL COMANDO
-            SqlDataReader reader = comando.ExecuteReader();
-            // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
-            while (reader.Read())
-            {
-                Usuario Usuario = new Usuario();
-                Usuario.idUsuario = (long)reader["idUsuario"];
-                Usuario.matricula = reader["matricula"].ToString();
-                Usuario.color = reader["color"].ToString();
-                Usuario.nPlazas = (int)reader["nPlazas"];
-                Usuario.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
-                Usuario.cilindrada = (Decimal)reader["cilindrada"];
-                Usuario.marca = new Marca();
-                Usuario.marca.denominacion = reader["Marca"].ToString();
-                Usuario.tipoCombustible = new TipoCombustible();
-                Usuario.tipoCombustible.denominacion = reader["Combustible"].ToString();
-                // añadiro a la lista que voy
-                // a devolver
-                resultado.Add(coche);
-            }
+        //// PREPARO EL PROCEDIMIENTO A EJECUTAR
+        //string procedimiento = "dbo.GetUsuarios";
+        //// PREPARO EL COMANDO PARA LA BD
+        //SqlCommand comando = new SqlCommand(procedimiento, conexion);
+        //// INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
+        //comando.CommandType = CommandType.StoredProcedure;
+        //    // EJECUTO EL COMANDO
+        //    SqlDataReader reader = comando.ExecuteReader();
+        //    // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
+        //    while (reader.Read())
+        //    {
+        //        Usuario Usuario = new Usuario();
+        //        Usuario.idUsuario = reader["idUsuario"].ToString();
+        //        Usuario.nif = reader["nif"].ToString();
+        //        Usuario.nombre = reader["nombre"].ToString();
+        //        Usuario.apellidos = reader["apellidos"].ToString();
+        //        Usuario.email = reader["email"].ToString();
+        //        Usuario.fechanacimiento = (DateTime)reader["fechanacimiento"];
+       
+        //// añadiro a la lista que voy
+        //// a devolver
+        //resultado.Add(Usuario);
+        //    }
 
-            return resultado;
-        }
-
-
+        //    return resultado;
+        //}
 
 
 
@@ -247,7 +240,7 @@ namespace carrentalweb
                 coche.matricula = reader["matricula"].ToString();
                 coche.color = reader["color"].ToString();
                 coche.nPlazas = (int)reader["nPlazas"];
-                coche.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
+                coche.FechaMatriculacion = (DateTime)reader["FechaMatriculacion"];
                 coche.cilindrada = (Decimal)reader["cilindrada"];
                 coche.marca = new Marca();
                 coche.marca.denominacion = reader["Marca"].ToString();
@@ -259,6 +252,60 @@ namespace carrentalweb
             }
 
             return resultado;
+        }
+        // Está correcto abajo
+        public static int AgregarCoche(Coche coche)
+        {
+            string procedimiento = "dbo.AgregarCoche";
+
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "matricula",
+                SqlDbType = SqlDbType.NVarChar,
+                SqlValue = coche.matricula
+            });
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "idMarca",
+                SqlDbType = SqlDbType.BigInt,
+                SqlValue = coche.marca.id
+            });
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "idTipoCombustible",
+                SqlDbType = SqlDbType.BigInt,
+                SqlValue = coche.tipoCombustible.id
+            });
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "color",
+                SqlDbType = SqlDbType.NVarChar,
+                SqlValue = coche.color
+            });
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "cilindrada",
+                SqlDbType = SqlDbType.Decimal,
+                SqlValue = coche.cilindrada
+            });
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "nPlazas",
+                SqlDbType = SqlDbType.SmallInt,
+                SqlValue = coche.nPlazas
+            });
+            comando.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "fechaMatriculacion",
+                SqlDbType = SqlDbType.Date,
+                SqlValue = coche.fechaMatriculacion
+            });
+
+            int filasAfectadas = comando.ExecuteNonQuery();
+
+            return filasAfectadas;
         }
 
         //Está correcto abajo

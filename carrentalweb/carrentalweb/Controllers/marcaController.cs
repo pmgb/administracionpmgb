@@ -73,7 +73,7 @@ namespace carrentalweb.Controllers
             }
 
             resultado.totalElementos = filasAfectadas;
-            resultado.dataMarcas = null;
+            resultado.Marcas = null;
             return resultado;
         }
 
@@ -88,7 +88,4 @@ namespace carrentalweb.Controllers
         }
     }
 
-    public class Marca
-    {
-    }
 }
