@@ -304,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CochesController.cs" />
     <Compile Include="Controllers\loginController.cs" />
     <Compile Include="Controllers\marcaController.cs" />
     <Compile Include="Controllers\otro_pmController.cs" />
@@ -313,7 +314,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Coche.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Marca.cs" />
+    <Compile Include="Models\TipoCombustible.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\RespuestaAPI.cs" />
     <Compile Include="Models\Usuario.cs" />

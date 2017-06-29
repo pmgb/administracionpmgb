@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace CarRentelWeb.Controllers
+namespace carrentalweb.Controllers
 {
     public class UsuariosController : ApiController
     {
