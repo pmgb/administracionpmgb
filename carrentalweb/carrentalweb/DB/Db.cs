@@ -65,11 +65,51 @@ namespace carrentalweb
             }
         }
 
-        //List Usuario está mal
+
+
+
+
+
+        //GetUsuarios está mal (copia de GetCoches)
+        //SELECT idUsuario, nif, nombre, apellidos, email, fechanacimiento FROM Usuario
         public static List<Usuario> GetUsuarios()
         {
-            throw new NotImplementedException();
+            List<Coche> resultado = new List<Coche>();
+
+            // PREPARO EL PROCEDIMIENTO A EJECUTAR
+            string procedimiento = "dbo.GetUsuarios";
+            // PREPARO EL COMANDO PARA LA BD
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            // INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
+            comando.CommandType = CommandType.StoredProcedure;
+            // EJECUTO EL COMANDO
+            SqlDataReader reader = comando.ExecuteReader();
+            // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
+            while (reader.Read())
+            {
+                Usuario Usuario = new Usuario();
+                Usuario.idUsuario = (long)reader["idUsuario"];
+                Usuario.matricula = reader["matricula"].ToString();
+                Usuario.color = reader["color"].ToString();
+                Usuario.nPlazas = (int)reader["nPlazas"];
+                Usuario.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
+                Usuario.cilindrada = (Decimal)reader["cilindrada"];
+                Usuario.marca = new Marca();
+                Usuario.marca.denominacion = reader["Marca"].ToString();
+                Usuario.tipoCombustible = new TipoCombustible();
+                Usuario.tipoCombustible.denominacion = reader["Combustible"].ToString();
+                // añadiro a la lista que voy
+                // a devolver
+                resultado.Add(coche);
+            }
+
+            return resultado;
         }
+
+
+
+
+
 
         public static bool EstaLaConexionAbierta()
         {
@@ -169,40 +209,57 @@ namespace carrentalweb
             return resultados;
         }
 
+        public static int AgregarMarca(Marca marca)
+        {
+            string procedimiento = "dbo.AgregarMarca";
+
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            SqlParameter parametro = new SqlParameter();
+            parametro.ParameterName = "denominacion";
+            parametro.SqlDbType = SqlDbType.NVarChar;
+            parametro.SqlValue = marca.denominacion;
+
+            comando.Parameters.Add(parametro);
+            int filasAfectadas = comando.ExecuteNonQuery();
+
+            return filasAfectadas;
+        }
+
         // Está correcto abajo
-        //public static List<Coche> GetCoches()
-        //{
-        //    List<Coche> resultado = new List<Coche>();
+        public static List<Coche> GetCoches()
+        {
+            List<Coche> resultado = new List<Coche>();
 
-        //    // PREPARO EL PROCEDIMIENTO A EJECUTAR
-        //    string procedimiento = "dbo.GetCoches";
-        //    // PREPARO EL COMANDO PARA LA BD
-        //    SqlCommand comando = new SqlCommand(procedimiento, conexion);
-        //    // INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
-        //    comando.CommandType = CommandType.StoredProcedure;
-        //    // EJECUTO EL COMANDO
-        //    SqlDataReader reader = comando.ExecuteReader();
-        //    // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
-        //    while (reader.Read())
-        //    {
-        //        Coche coche = new Coche();
-        //        coche.id = (long)reader["id"];
-        //        coche.matricula = reader["matricula"].ToString();
-        //        coche.color = reader["color"].ToString();
-        //        coche.nPlazas = (int)reader["nPlazas"];
-        //        coche.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
-        //        coche.cilindrada = (Decimal)reader["cilindrada"];
-        //        coche.marca = new Marca();
-        //        coche.marca.denominacion = reader["Marca"].ToString();
-        //        coche.tipoCombustible = new TipoCombustible();
-        //        coche.tipoCombustible.denominacion = reader["Combustible"].ToString();
-        //        // añadiro a la lista que voy
-        //        // a devolver
-        //        resultado.Add(coche);
-        //    }
+            // PREPARO EL PROCEDIMIENTO A EJECUTAR
+            string procedimiento = "dbo.GetCoches";
+            // PREPARO EL COMANDO PARA LA BD
+            SqlCommand comando = new SqlCommand(procedimiento, conexion);
+            // INDICO QUE LO QUE VOY A EJECUTAR ES UN PA
+            comando.CommandType = CommandType.StoredProcedure;
+            // EJECUTO EL COMANDO
+            SqlDataReader reader = comando.ExecuteReader();
+            // PROCESO EL RESULTADO Y LO MENTO EN LA VARIABLE
+            while (reader.Read())
+            {
+                Coche coche = new Coche();
+                coche.id = (long)reader["id"];
+                coche.matricula = reader["matricula"].ToString();
+                coche.color = reader["color"].ToString();
+                coche.nPlazas = (int)reader["nPlazas"];
+                coche.fechaMatriculacion = (DateTime)reader["fechaMatriculacion"];
+                coche.cilindrada = (Decimal)reader["cilindrada"];
+                coche.marca = new Marca();
+                coche.marca.denominacion = reader["Marca"].ToString();
+                coche.tipoCombustible = new TipoCombustible();
+                coche.tipoCombustible.denominacion = reader["Combustible"].ToString();
+                // añadiro a la lista que voy
+                // a devolver
+                resultado.Add(coche);
+            }
 
-        //    return resultado;
-        //}
+            return resultado;
+        }
 
         //Está correcto abajo
         //public static List<Coche> GetCochesPorId(long id)
@@ -245,22 +302,6 @@ namespace carrentalweb
         //    return resultado;
         //}
 
-        //public static int AgregarMarca(Marca marca)
-        //{
-        //    string procedimiento = "dbo.AgregarMarca";
-
-        //    SqlCommand comando = new SqlCommand(procedimiento, conexion);
-        //    comando.CommandType = CommandType.StoredProcedure;
-        //    SqlParameter parametro = new SqlParameter();
-        //    parametro.ParameterName = "denominacion";
-        //    parametro.SqlDbType = SqlDbType.NVarChar;
-        //    parametro.SqlValue = marca.denominacion;
-
-        //    comando.Parameters.Add(parametro);
-        //    int filasAfectadas = comando.ExecuteNonQuery();
-
-        //    return filasAfectadas;
-        //}
 
         //función hecha por el teacher
         //function eliminar(id, fila)
