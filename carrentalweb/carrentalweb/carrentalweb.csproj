@@ -259,6 +259,8 @@
     <Content Include="assets\js\moment.min.js" />
     <Content Include="assets\js\sweetalert2.js" />
     <Content Include="assets\js\utilidades.js" />
+    <Content Include="cochesDetalle.html" />
+    <Content Include="js\cocheDetalle.js" />
     <Content Include="Tiposcombustible.html" />
     <Content Include="dashboard.js" />
     <Content Include="dashboard.html" />

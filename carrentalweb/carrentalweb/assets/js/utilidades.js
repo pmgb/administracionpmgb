@@ -72,5 +72,13 @@ mensajes = {
             datosUsuario = JSON.parse(obj);
         }
         return cb(datosUsuario, null);
-    }
+    },
+    dateToString: function (stringDate) {
+    var fechaFomateada = '';
+    var fecha = new Date(stringDate);
+    var dia = fecha.getDate();
+    var mes = (fecha.getMonth() + 1);
+    fechaFomateada = (dia < 10 ? '0' + dia : dia) + '/' + (mes < 10 ? '0' + mes : mes) + '/' + fecha.getFullYear();
+    return fechaFomateada;
+}
 }
